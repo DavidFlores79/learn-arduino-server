@@ -13,9 +13,9 @@
       crossorigin="anonymous"
     />
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
   </head>
 
   <body>
@@ -36,29 +36,6 @@
     <script src="socket.io/socket.io.js"></script>
     <script>
       const socket = io();
-      // Obtén el tbody de la tabla
-      const tbody = document.getElementById("bandTableBody");
-
-      // Función para renderizar la tabla
-      function renderTable(bands) {
-        const tbody = document.getElementById("bandTableBody");
-        tbody.innerHTML = ""; // Limpiar tbody
-
-        bands.forEach((band) => {
-          const row = document.createElement("tr");
-          const id = band.id;
-          row.innerHTML = `
-                    <td>${band.id}</td>
-                    <td>${band.name}</td>
-                    <td>${band.votes}</td>
-                    <td>
-                        <button class="btn btn-primary" onclick="handleVoteBtn(this, '${id}')">Votar</button>
-                        <button class="btn btn-danger" onclick="handleRemoveBtn(this, '${id}')">Borrar</button>
-                    </td>
-                `;
-          tbody.appendChild(row);
-        });
-      }
 
       socket.on("connect", () => {
         console.log("Conectado al servidor");
@@ -72,47 +49,7 @@
         console.log("Escuchando", payload);
       });
 
-      socket.on("active-bands", (payload) => {
-        console.log("Escuchando Bandas Activas", payload);
-        const bands = payload;
-        renderTable(bands);
-      });
-
-      socket.on("vote-band", (payload) => {
-        console.log("Escuchando Vote Band", payload);
-        const bands = payload;
-        // renderTable(bands);
-      });
-
-      socket.on("remove-band", (payload) => {
-        console.log("Escuchando Remove Band", payload);
-        const bands = payload;
-        renderTable(bands);
-      });
-
       socket.emit("message", { name: "David" });
-
-      function handleVoteBtn(button, bandId) {
-        button.classList.add("animate__heartBeat");
-        console.log(bandId);
-        
-        setTimeout(() => {
-            socket.emit("vote-band", bandId);
-            button.classList.remove("animate__heartBeat");
-        }, 750);
-      }
-
-      function handleRemoveBtn(button, bandId) {
-        const row = button.closest('tr');
-
-        row.classList.add("animate__animated", "animate__bounceOutRight", "animate_slower");
-        console.log(bandId);
-        
-        setTimeout(() => {
-            socket.emit("remove-band", bandId);
-            row.classList.remove("animate__animated", "animate__bounceOutRight", "animate_slower");
-        }, 800);
-      }
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
