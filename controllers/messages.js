@@ -1,6 +1,4 @@
 const { response } = require("express");
-const userModel = require('../models/user');
-const { generateJWT } = require("../helpers/jwt");
 
 const getMessages = async (req, res = response) => {
 
