@@ -8,7 +8,7 @@ const { getMessages } = require('../controllers/messages');
 const { validateJWT } = require('../middlewares/validateJWT');
 const router = Router();
 
-router.get('/messages', [
+router.get('/', [
     validateJWT,
 ], getMessages);
 

@@ -1,12 +1,21 @@
 const { io } = require("../app");
+const { userConnected, userDisconnected } = require("../controllers/socket");
+const { validateJWTSocketSession } = require("../helpers/jwt");
 
 //Mensajes de Sockets
 io.on('connection', client => {
 
     console.log('cliente conectado');
+    const [sessionValid, uid] = validateJWTSocketSession(client.handshake.headers['x-token']);
+
+    if (!sessionValid) return client.disconnect();
+
+    console.log('cliente autenticado!');
+    userConnected(uid);
 
     client.on('disconnect', () => {
         console.log('cliente desconectado');
+        userDisconnected(uid);
     });
 
     client.on('message', (payload) => {

@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const path = require('path');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
 const msgRoutes = require('./routes/msg');
 
 //DB Config
@@ -25,7 +26,8 @@ app.use(express.static(publicPath));
 
 //Rutas
 app.use('/api/auth', authRoutes);
-app.use('/api/v1', msgRoutes);
+app.use('/api/v1/messages', msgRoutes);
+app.use('/api/v1/users', msgRoutes);
 
 
 
