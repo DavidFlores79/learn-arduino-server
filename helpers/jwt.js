@@ -21,13 +21,14 @@ const generateJWT = (uid) => {
 
 const validateJWTSocketSession = (token = '') => {
 
-
     try {
 
         const { uid } = jwt.verify(token, process.env.PRIVATE_JWT_KEY);
+        console.log({ uid });
         return [true, uid];
 
     } catch (error) {
+        console.log({ error });
         return [false, null];
     }
 

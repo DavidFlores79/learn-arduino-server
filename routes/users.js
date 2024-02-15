@@ -6,7 +6,7 @@ const { validateJWT } = require('../middlewares/validateJWT');
 const { getUsers } = require('../controllers/users');
 const router = Router();
 
-router.get('/users', [
+router.get('/', [
     validateJWT,
 ], getUsers);
 

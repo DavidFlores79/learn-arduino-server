@@ -27,7 +27,7 @@ app.use(express.static(publicPath));
 //Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/v1/messages', msgRoutes);
-app.use('/api/v1/users', msgRoutes);
+app.use('/api/v1/users', userRoutes);
 
 
 
