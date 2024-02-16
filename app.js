@@ -12,13 +12,13 @@ dbConnection();
 
 const app = express();
 
-// Habilitar CORS
-app.use(cors());
-
 // Websocket Server
 const server = require('http').createServer(app);
 module.exports.io = require('socket.io')(server);
 require('./sockets/socket');
+
+// Habilitar CORS
+app.use(cors());
 
 //url parser
 app.use(express.json());
