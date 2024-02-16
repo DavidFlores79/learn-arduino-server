@@ -24,6 +24,11 @@ io.on('connection', client => {
         io.emit('message', { type: 'message', message: payload.message, from: payload.name });
     })
 
+    client.on('user-login', (payload) => {
+        console.log(payload);
+        client.emit('user-login', payload);
+    })
+
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
         client.broadcast.emit('message', payload);
