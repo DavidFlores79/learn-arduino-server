@@ -86,10 +86,10 @@
       });
 
       socket.on("message", (payload) => {
-        console.log("Escuchando", payload);
+        console.log({ payload });
       });
 
-      socket.emit("message", { name: "David" });
+      socket.emit("message", { name: "Prueba", message: "Hola mundo!!" });
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"

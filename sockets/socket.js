@@ -21,7 +21,7 @@ io.on('connection', client => {
     client.on('message', (payload) => {
         console.log(payload);
 
-        io.emit('message', { type: 'Generic', message: payload });
+        io.emit('message', { type: 'message', message: payload.message, from: payload.name });
     })
 
     client.on('flutter-message', (payload) => {
