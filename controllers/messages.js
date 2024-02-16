@@ -24,8 +24,7 @@ const getMessages = async (req, res = response) => {
 const sendMessage = async (req, res = response) => {
 
     try {
-
-        io.emit('message', { type: 'message', message: 'hola mundo', from: 'Me' });
+        req.io.emit('message', req.body);
 
         res.json({
             ok: true,
