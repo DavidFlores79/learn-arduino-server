@@ -17,8 +17,15 @@ const server = require('http').createServer(app);
 module.exports.io = require('socket.io')(server);
 require('./sockets/socket');
 
+const corsOptions = {
+    origin: '*', // o '*' para permitir desde cualquier origen
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Habilitar el envío de credenciales (cookies)
+};
+
+
 // Habilitar CORS
-app.use(cors());
+app.use(cors(corsOptions));
 
 //url parser
 app.use(express.json());
