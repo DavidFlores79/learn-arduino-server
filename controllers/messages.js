@@ -1,3 +1,4 @@
+const { io } = require("../app");
 const { response } = require("express");
 
 const getMessages = async (req, res = response) => {
@@ -20,7 +21,30 @@ const getMessages = async (req, res = response) => {
 
 }
 
+const sendMessage = async (req, res = response) => {
+
+    try {
+
+        io.emit('message', { type: 'message', message: 'hola mundo', from: 'Me' });
+
+        res.json({
+            ok: true,
+            msg: 'Mensaje enviado!',
+            uid: req.uid
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            error
+        })
+    }
+
+}
+
 
 module.exports = {
-    getMessages
+    getMessages,
+    sendMessage,
 }
