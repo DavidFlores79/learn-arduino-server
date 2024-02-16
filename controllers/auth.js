@@ -63,10 +63,10 @@ const login = async (req, res = response) => {
         const validPassword = bcrypt.compareSync(password, user.password);
 
         if (!validPassword) {
-            console.log('no valido!');
+            console.log('Usuario No Válido!');
             return res.status(404).json({
                 ok: false,
-                msg: 'Contraseña Incorrecta'
+                msg: 'Error: Contraseña Incorrecta'
             })
         }
 
@@ -76,7 +76,7 @@ const login = async (req, res = response) => {
 
         res.json({
             ok: true,
-            msg: 'Login!!',
+            msg: 'Usuario Autorizado. Token generado',
             user,
             jwt
         });
