@@ -1,4 +1,4 @@
-const { io, app } = require("../app");
+const { io } = require("../app");
 const { userConnected, userDisconnected } = require("../controllers/socket");
 const { validateJWTSocketSession } = require("../helpers/jwt");
 
@@ -28,13 +28,6 @@ io.on('connection', client => {
         console.log(payload);
         client.broadcast.emit('user-login', payload);
     })
-
-    //agregar io al request
-    app.use(function (req, res, next) {
-        req.client = client;
-        next();
-    });
-
 
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
