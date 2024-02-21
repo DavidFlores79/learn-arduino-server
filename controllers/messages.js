@@ -25,6 +25,7 @@ const sendMessage = async (req, res = response) => {
     try {
         const { type, payload } = req.body;
 
+        console.log({ payload });
         req.io.emit(type, payload);
 
         res.json({
