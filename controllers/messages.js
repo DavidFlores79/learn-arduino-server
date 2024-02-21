@@ -1,4 +1,3 @@
-const { io } = require("../app");
 const { response } = require("express");
 
 const getMessages = async (req, res = response) => {
@@ -26,7 +25,8 @@ const sendMessage = async (req, res = response) => {
     try {
         const { type, payload } = req.body;
 
-        req.io.emit(type, payload);
+        // req.io.emit(type, payload);
+        req.client.broadcast.emit(type, payload);
 
         res.json({
             ok: true,

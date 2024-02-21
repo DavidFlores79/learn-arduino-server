@@ -22,6 +22,7 @@ const io = require('socket.io')(server, {
     transports: ['websocket', 'polling']
 });
 module.exports.io = io;
+module.exports.app = app;
 require('./sockets/socket');
 
 //url parser
