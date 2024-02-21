@@ -29,10 +29,13 @@ io.on('connection', client => {
         client.broadcast.emit('user-login', payload);
     })
 
+    client.on('purchase-request', (payload) => {
+        console.log(payload);
+        client.broadcast.emit('purchase-request', payload);
+    })
+
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
         client.broadcast.emit('message', payload);
     })
-
-
 });

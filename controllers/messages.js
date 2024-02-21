@@ -25,7 +25,7 @@ const sendMessage = async (req, res = response) => {
     try {
         const { type, payload } = req.body;
 
-        req.io.emit(type, payload, { except: req.socket.id });
+        req.io.emit(type, payload);
 
         res.json({
             ok: true,
