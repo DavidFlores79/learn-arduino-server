@@ -31,16 +31,16 @@ io.on('connection', client => {
 
     client.on('user-login', (payload) => {
         console.log(payload);
-        client.to(uid).broadcast.emit('user-login', payload);
+        client.broadcast.to(uid).emit('user-login', payload);
     })
 
     client.on('purchase-request', (payload) => {
-        console.log(payload);
-        client.to(uid).broadcast.emit('purchase-request', payload);
+        console.log('purchase-request', payload);
+        client.broadcast.to(uid).emit('purchase-request', payload);
     })
 
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
-        client.to(uid).broadcast.emit('message', payload);
+        client.broadcast.to(uid).emit('message', payload);
     })
 });
