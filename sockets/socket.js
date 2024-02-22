@@ -12,6 +12,7 @@ io.on('connection', client => {
 
     console.log('cliente autenticado!');
     userConnected(uid);
+    client.join(uid); //ingresar a la sala de ese proyecto
 
     client.on('disconnect', () => {
         console.log('cliente desconectado');
@@ -20,22 +21,26 @@ io.on('connection', client => {
 
     client.on('message', (payload) => {
         console.log(payload);
-
         io.emit('message', { type: 'message', message: payload.message, from: payload.name });
+    })
+
+    client.on('general-message', (payload) => {
+        console.log(payload);
+        io.emit('general-message', payload);
     })
 
     client.on('user-login', (payload) => {
         console.log(payload);
-        client.broadcast.emit('user-login', payload);
+        client.to(uid).broadcast.emit('user-login', payload);
     })
 
     client.on('purchase-request', (payload) => {
         console.log(payload);
-        client.broadcast.emit('purchase-request', payload);
+        client.to(uid).broadcast.emit('purchase-request', payload);
     })
 
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
-        client.broadcast.emit('message', payload);
+        client.to(uid).broadcast.emit('message', payload);
     })
 });
