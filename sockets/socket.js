@@ -29,18 +29,29 @@ io.on('connection', client => {
         io.emit('general-message', payload);
     })
 
+    client.on('system-log', (payload) => {
+        console.log(payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('system-log', payload);
+
+        //TODO: Guardar el log en Mongo
+    })
+
     client.on('user-login', (payload) => {
         console.log(payload);
+        //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('user-login', payload);
     })
 
     client.on('purchase-request', (payload) => {
         console.log('purchase-request', payload);
+        //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('purchase-request', payload);
     })
 
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
+        //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('message', payload);
     })
 });
