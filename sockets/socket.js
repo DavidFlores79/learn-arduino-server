@@ -33,9 +33,9 @@ io.on('connection', client => {
 
     client.on('private-message', (payload) => {
         console.log(payload);
-        //solo se emitira al usuario logueado
-        client.to(`${uid}-${clientId}`).emit('private-message', payload);
-
+        const { from, to, message } = payload;
+        //solo se emitira al usuario para (to)
+        client.to(`${uid}-${to}`).emit('private-message', payload);
 
         //TODO: Guardar el log en MongoDB
     })
