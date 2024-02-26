@@ -14,7 +14,7 @@ io.on('connection', client => {
     console.log(`cliente autenticado! userId: ${clientId}`);
     userConnected(uid);
     client.join(uid); //ingresar a la sala de ese proyecto
-    if (clientId) client.join(clientId); //ingresar a la sala de ese usuario
+    if (clientId) client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
 
     client.on('disconnect', () => {
         console.log('cliente desconectado');
@@ -29,6 +29,15 @@ io.on('connection', client => {
     client.on('general-message', (payload) => {
         console.log(payload);
         io.emit('general-message', payload);
+    })
+
+    client.on('private-message', (payload) => {
+        console.log(payload);
+        //solo se emitira al usuario logueado
+        client.to(`${uid}-${clientId}`).emit('private-message', payload);
+
+
+        //TODO: Guardar el log en MongoDB
     })
 
     client.on('system-log', (payload) => {
