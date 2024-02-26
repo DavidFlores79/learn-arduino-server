@@ -11,7 +11,7 @@ io.on('connection', client => {
 
     if (!sessionValid) return client.disconnect();
 
-    console.log('cliente autenticado!');
+    console.log(`cliente autenticado! userId: ${clientId}`);
     userConnected(uid);
     client.join(uid); //ingresar a la sala de ese proyecto
     if (clientId) client.join(clientId); //ingresar a la sala de ese usuario
