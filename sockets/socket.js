@@ -7,12 +7,14 @@ io.on('connection', client => {
 
     console.log('cliente conectado');
     const [sessionValid, uid] = validateJWTSocketSession(client.handshake.headers['x-token']);
+    const clientId = client.handshake.headers['x-id'];
 
     if (!sessionValid) return client.disconnect();
 
     console.log('cliente autenticado!');
     userConnected(uid);
     client.join(uid); //ingresar a la sala de ese proyecto
+    if (clientId) client.join(clientId); //ingresar a la sala de ese usuario
 
     client.on('disconnect', () => {
         console.log('cliente desconectado');
@@ -34,7 +36,7 @@ io.on('connection', client => {
         //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('system-log', payload);
 
-        //TODO: Guardar el log en Mongo
+        //TODO: Guardar el log en MongoDB
     })
 
     client.on('user-login', (payload) => {
