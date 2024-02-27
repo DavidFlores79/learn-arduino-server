@@ -60,6 +60,12 @@ io.on('connection', client => {
         client.broadcast.to(uid).emit('purchase-request', payload);
     })
 
+    client.on('release-purchase-request', (payload) => {
+        console.log('purchase-request', payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('release-purchase-request', payload);
+    })
+
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
         //solo se emitira a los que esten en el mismo proyecto
