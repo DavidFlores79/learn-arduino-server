@@ -54,6 +54,8 @@ io.on('connection', client => {
         client.broadcast.to(uid).emit('user-login', payload);
     })
 
+
+    /* INICIO HOPE SUCURSALES SBO */
     client.on('purchase-request', (payload) => {
         console.log('purchase-request', payload);
         //solo se emitira a los que esten en el mismo proyecto
@@ -66,9 +68,42 @@ io.on('connection', client => {
         client.broadcast.to(uid).emit('release-purchase-request', payload);
     })
 
+    client.on('repayment-expenses', (payload) => {
+        console.log('purchase-request', payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('repayment-expenses', payload);
+    })
+    
+    client.on('monitor-expenses', (payload) => {
+        console.log('purchase-request', payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('monitor-expenses', payload);
+    })
+
+    client.on('quotations', (payload) => {
+        console.log('purchase-request', payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('release-purchase-request', payload);
+    })
+
+    client.on('purchase-delivery', (payload) => {
+        console.log('purchase-request', payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('release-purchase-request', payload);
+    })
+
+    client.on('purchase-invoices', (payload) => {
+        console.log('purchase-request', payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('release-purchase-request', payload);
+    })
+
     client.on('flutter-message', (payload) => {
         console.log('Flutter message', payload);
         //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('message', payload);
     })
+    /* INICIO HOPE SUCURSALES SBO */
+
+
 });
