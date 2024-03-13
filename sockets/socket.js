@@ -63,39 +63,39 @@ io.on('connection', client => {
     })
 
     client.on('release-purchase-request', (payload) => {
-        console.log('purchase-request', payload);
+        console.log('release-purchase-request', payload);
         //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('release-purchase-request', payload);
     })
 
     client.on('repayment-expenses', (payload) => {
-        console.log('purchase-request', payload);
+        console.log('repayment-expenses', payload);
         //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('repayment-expenses', payload);
     })
     
     client.on('expenses-monitor', (payload) => {
-        console.log('purchase-request', payload);
+        console.log('expenses-monitor', payload);
         //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('monitor-expenses', payload);
+        client.broadcast.to(uid).emit('expenses-monitor', payload);
     })
 
     client.on('quotations', (payload) => {
-        console.log('purchase-request', payload);
+        console.log('quotations', payload);
         //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('release-purchase-request', payload);
+        client.broadcast.to(uid).emit('quotations', payload);
     })
 
     client.on('purchase-delivery', (payload) => {
-        console.log('purchase-request', payload);
+        console.log('purchase-delivery', payload);
         //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('release-purchase-request', payload);
+        client.broadcast.to(uid).emit('purchase-delivery', payload);
     })
 
     client.on('purchase-invoices', (payload) => {
-        console.log('purchase-request', payload);
+        console.log('purchase-invoices', payload);
         //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('release-purchase-request', payload);
+        client.broadcast.to(uid).emit('purchase-invoices', payload);
     })
 
     client.on('flutter-message', (payload) => {
