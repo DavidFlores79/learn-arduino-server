@@ -74,7 +74,7 @@ io.on('connection', client => {
         client.broadcast.to(uid).emit('repayment-expenses', payload);
     })
     
-    client.on('monitor-expenses', (payload) => {
+    client.on('expenses-monitor', (payload) => {
         console.log('purchase-request', payload);
         //solo se emitira a los que esten en el mismo proyecto
         client.broadcast.to(uid).emit('monitor-expenses', payload);
