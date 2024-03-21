@@ -8,13 +8,17 @@ io.on('connection', client => {
     console.log('cliente conectado');
     const [sessionValid, uid] = validateJWTSocketSession(client.handshake.headers['x-token']);
     const clientId = client.handshake.headers['x-id'];
+    const projectUser = client.handshake.headers['x-user'];
 
     if (!sessionValid) return client.disconnect();
 
     console.log(`cliente autenticado! userId: ${clientId}`);
     userConnected(uid);
     client.join(uid); //ingresar a la sala de ese proyecto
-    if (clientId) client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
+    if (clientId) {
+        client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
+        console.log({ usuario: projectUser });
+    }
 
     client.on('disconnect', () => {
         console.log('cliente desconectado');
@@ -104,6 +108,16 @@ io.on('connection', client => {
         client.broadcast.to(uid).emit('message', payload);
     })
     /* INICIO HOPE SUCURSALES SBO */
+
+    /* INICIO HOPE SERVICE DESK */
+
+    client.on('ticket-status', (payload) => {
+        console.log('ticket-status', payload);
+        //solo se emitira a los que esten en el mismo proyecto
+        client.broadcast.to(uid).emit('ticket-status', payload);
+    })
+
+    /* FIN HOPE SERVICE DESK */
 
 
 });
