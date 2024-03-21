@@ -17,7 +17,8 @@ io.on('connection', client => {
     client.join(uid); //ingresar a la sala de ese proyecto
     if (clientId && projectUser) {
         client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
-        console.log(projectUser.name);
+        console.log('Tipo: ',typeof projectUser);
+        console.log('User: ', JSON.stringify(projectUser));
     }
 
     client.on('disconnect', () => {
