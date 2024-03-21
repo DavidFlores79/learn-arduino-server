@@ -1,5 +1,5 @@
 const { io } = require("../app");
-const { userConnected, userDisconnected } = require("../controllers/socket");
+const { userConnected, projectConnected, userDisconnected, projectDisconnected } = require("../controllers/socket");
 const { validateJWTSocketSession } = require("../helpers/jwt");
 
 //Mensajes de Sockets
@@ -14,7 +14,7 @@ io.on('connection', client => {
     if (!sessionValid) return client.disconnect();
 
     console.log(`cliente autenticado! userId: ${clientId}`);
-    userConnected(uid);
+    projectConnected(uid);
 
     client.join(uid); //ingresar a la sala de ese proyecto
     
@@ -22,11 +22,13 @@ io.on('connection', client => {
         client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
         console.log(`Se unió a la sala: ${uid}-${clientId}`);
         console.log({clientFullName, clientEmail});
+        userConnected(uid, clientId, clientFullName, clientEmail);
     }
 
     client.on('disconnect', () => {
         console.log('cliente desconectado');
-        userDisconnected(uid);
+        projectDisconnected(uid);
+        userDisconnected(uid, clientId);
     });
 
     client.on('message', (payload) => {
@@ -44,7 +46,6 @@ io.on('connection', client => {
         const { from, to, message } = payload;
         //solo se emitira al usuario para (to)
         client.to(`${uid}-${to}`).emit('private-message', payload);
-
         //TODO: Guardar el log en MongoDB
     })
 
@@ -115,10 +116,10 @@ io.on('connection', client => {
 
     /* INICIO HOPE SERVICE DESK */
 
-    client.on('ticket-assigment', (payload) => {
-        console.log('ticket-assigment', payload);
+    client.on('ticket-status', (payload) => {
+        console.log('ticket-status', payload);
         //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('ticket-assigment', payload);
+        client.broadcast.to(uid).emit('ticket-status', payload);
     })
 
     /* FIN HOPE SERVICE DESK */
