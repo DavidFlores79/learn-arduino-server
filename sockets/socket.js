@@ -9,7 +9,6 @@ io.on('connection', client => {
     const [sessionValid, uid] = validateJWTSocketSession(client.handshake.headers['x-token']);
     const clientId = client.handshake.headers['x-id'];
     const projectUser = client.handshake.headers['x-user'];
-    const { name, apellido, email } = JSON.parse(projectUser);
 
     if (!sessionValid) return client.disconnect();
 
@@ -18,7 +17,7 @@ io.on('connection', client => {
     client.join(uid); //ingresar a la sala de ese proyecto
     if (clientId) {
         client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
-        console.log({ name, apellido, email });
+        console.log(projectUser.name);
     }
 
     client.on('disconnect', () => {
