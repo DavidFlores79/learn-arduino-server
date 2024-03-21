@@ -7,7 +7,7 @@ const UserConnected = Schema({
         required: [true, 'El uid del proyecto es obligatorio']
     },
     userId: {
-        type: Integer,
+        type: Number,
         required: [true, 'El id del usuario es obligatorio'],
     },
     fullName: {
