@@ -22,7 +22,9 @@ const userConnected = async (projectId = '', userId = '', fullName = '', email =
     const user = await userConnectedModel.findOne({ projectId, userId  });
 
     if(!user) {
-        return await new userConnectedModel({ projectId, userId, fullName, email, online: true });
+        const newUser = new userConnectedModel({ projectId, userId, fullName, email, online: true });
+        await newUser.save();
+        return newUser;
     }
     user.online = true;
     await user.save();
