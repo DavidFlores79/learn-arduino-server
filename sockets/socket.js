@@ -8,17 +8,20 @@ io.on('connection', client => {
     console.log('cliente conectado');
     const [sessionValid, uid] = validateJWTSocketSession(client.handshake.headers['x-token']);
     const clientId = client.handshake.headers['x-id'];
-    const projectUser = client.handshake.headers['x-user'];
+    const clientFullName = client.handshake.headers['x-fullname'];
+    const clientEmail = client.handshake.headers['x-mail'];
 
     if (!sessionValid) return client.disconnect();
 
     console.log(`cliente autenticado! userId: ${clientId}`);
     userConnected(uid);
+
     client.join(uid); //ingresar a la sala de ese proyecto
-    if (clientId && projectUser) {
+    
+    if (clientId && clientFullName) {
         client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
-        console.log('Tipo: ',typeof projectUser);
-        console.log('User: ', JSON.stringify(projectUser));
+        console.log(`Se unió a la sala: ${uid}-${clientId}`);
+        console.log({clientFullName, clientEmail});
     }
 
     client.on('disconnect', () => {
@@ -112,10 +115,10 @@ io.on('connection', client => {
 
     /* INICIO HOPE SERVICE DESK */
 
-    client.on('ticket-status', (payload) => {
-        console.log('ticket-status', payload);
+    client.on('ticket-assigment', (payload) => {
+        console.log('ticket-assigment', payload);
         //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('ticket-status', payload);
+        client.broadcast.to(uid).emit('ticket-assigment', payload);
     })
 
     /* FIN HOPE SERVICE DESK */
