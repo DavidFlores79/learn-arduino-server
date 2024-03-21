@@ -8,7 +8,8 @@ io.on('connection', client => {
     console.log('cliente conectado');
     const [sessionValid, uid] = validateJWTSocketSession(client.handshake.headers['x-token']);
     const clientId = client.handshake.headers['x-id'];
-    const { name, apellido, email } = client.handshake.headers['x-user'];
+    const projectUser = client.handshake.headers['x-user'];
+    const { name, apellido, email } = JSON.parse(projectUser);
 
     if (!sessionValid) return client.disconnect();
 
