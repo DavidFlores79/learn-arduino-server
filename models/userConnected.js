@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const UserConnected = Schema({
+const ConnectedUser = Schema({
     projectId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -23,10 +23,10 @@ const UserConnected = Schema({
     },
 });
 
-UserConnected.method('toJSON', function () {
+ConnectedUser.method('toJSON', function () {
     const { __v, _id, ...object } = this.toObject();
     object.uid = _id;
     return object;
 });
 
-module.exports = model('UserConnected', UserConnected);
+module.exports = model('ConnectedUser', ConnectedUser);
