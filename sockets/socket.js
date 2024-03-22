@@ -22,13 +22,15 @@ io.on('connection', client => {
         client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
         console.log(`Se unió a la sala: ${uid}-${clientId}`);
         console.log({clientFullName, clientEmail});
-        io.emit('user-connection', userConnected(uid, clientId, clientFullName, clientEmail));
+        const user = userConnected(uid, clientId, clientFullName, clientEmail);
+        io.emit('user-connection', user);
     }
 
     client.on('disconnect', () => {
         console.log('cliente desconectado');
         projectDisconnected(uid);
-        io.emit('user-connection', userDisconnected(uid, clientId));
+        const user = userDisconnected(uid, clientId);
+        io.emit('user-connection', user);
     });
 
     client.on('message', (payload) => {
