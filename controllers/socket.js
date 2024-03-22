@@ -37,6 +37,7 @@ const userDisconnected = async (projectId = '', userId) => {
         user.online = false;
         await user.save();
     }
+    return user;
 }
 
 module.exports = {

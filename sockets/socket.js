@@ -3,7 +3,7 @@ const { userConnected, projectConnected, userDisconnected, projectDisconnected }
 const { validateJWTSocketSession } = require("../helpers/jwt");
 
 //Mensajes de Sockets
-io.on('connection', client => {
+io.on('connection', async client => {
 
     console.log('cliente conectado');
     const [sessionValid, uid] = validateJWTSocketSession(client.handshake.headers['x-token']);
@@ -22,14 +22,14 @@ io.on('connection', client => {
         client.join(`${uid}-${clientId}`); //ingresar a la sala de ese usuario
         console.log(`Se unió a la sala: ${uid}-${clientId}`);
         console.log({clientFullName, clientEmail});
-        const user = userConnected(uid, clientId, clientFullName, clientEmail);
+        const user = await userConnected(uid, clientId, clientFullName, clientEmail);
         io.emit('user-connection', user);
     }
 
-    client.on('disconnect', () => {
+    client.on('disconnect', async () => {
         console.log('cliente desconectado');
         projectDisconnected(uid);
-        const user = userDisconnected(uid, clientId);
+        const user = await userDisconnected(uid, clientId);
         io.emit('user-connection', user);
     });
 
