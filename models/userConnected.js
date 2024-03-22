@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const UserConnected = Schema({
-    project_id: {
+    projectId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'El uid del proyecto es obligatorio']

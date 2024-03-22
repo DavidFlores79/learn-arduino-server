@@ -20,7 +20,7 @@ const projectDisconnected = async (uid = '') => {
 const userConnected = async (projectId = '', userId = '', fullName = '', email = '') => {
 
     const user = await userConnectedModel.findOne({ projectId, userId  });
-
+    
     if(!user) {
         const newUser = new userConnectedModel({ projectId, userId, fullName, email, online: true });
         await newUser.save();
@@ -31,11 +31,12 @@ const userConnected = async (projectId = '', userId = '', fullName = '', email =
     return user;
 }
 
-const userDisconnected = async (projectId = '', userId = '') => {
-    const user = await projectModel.findOne({ projectId, userId  });
-    user.online = false;
-    await user.save();
-    return user;
+const userDisconnected = async (projectId = '', userId) => {
+    const user = await userConnectedModel.findOne({ projectId, userId  });
+    if(user) {
+        user.online = false;
+        await user.save();
+    }
 }
 
 module.exports = {
