@@ -19,6 +19,10 @@ const generateJWT = (uid) => {
     });
 }
 
+const getExpTimestamp = ( token ) => {
+    return jwt.decode(token);
+}
+
 const validateJWTSocketSession = (token = '') => {
 
     try {
@@ -36,5 +40,6 @@ const validateJWTSocketSession = (token = '') => {
 
 module.exports = {
     generateJWT,
-    validateJWTSocketSession
+    validateJWTSocketSession,
+    getExpTimestamp,
 }
