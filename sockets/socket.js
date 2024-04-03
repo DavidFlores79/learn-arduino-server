@@ -39,16 +39,15 @@ io.on('connection', async client => {
 
     client.on('system-log', (payload) => {
         console.log('system-log', payload);
-        //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('system-log', payload);
-
+        //se emitira a todos los usuarios menos el que lo envio
+        client.broadcast.emit('system-log', payload);
         //TODO: Guardar el log en MongoDB
     })
 
     client.on('user-login', (payload) => {
         console.log('user-login', payload);
-        //solo se emitira a los que esten en el mismo proyecto
-        client.broadcast.to(uid).emit('user-login', payload);
+        //se emitira a todos los usuarios menos el que lo envio
+        client.broadcast.emit('user-login', payload);
     })
 
 });
