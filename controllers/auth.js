@@ -5,7 +5,7 @@ const { generateJWT, getExpTimestamp } = require("../helpers/jwt");
 
 const register = async (req, res = response) => {
 
-    const { name, email, password } = req.body;
+    const { name, email, password, phone } = req.body;
 
     try {
 
@@ -27,13 +27,14 @@ const register = async (req, res = response) => {
 
         //generar JWT
         const jwt = await generateJWT(user.id);
+        const { exp } = getExpTimestamp(jwt);
 
         res.json({
             ok: true,
             msg: 'Registro Creado',
-            data: user,
+            user,
             jwt,
-
+            exp
         });
 
     } catch (error) {
