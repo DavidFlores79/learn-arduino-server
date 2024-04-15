@@ -66,14 +66,14 @@ const activate = async (req, res = response) => {
             return res.status(400).json({ msg: 'El código NO es válido' });
         }
 
-        const data = await userModel.findByIdAndUpdate('661d59a83eb3051740a95991', {
+        const user = await userModel.findByIdAndUpdate(uid, {
             active: true,
         }, { new: true });
         
         return res.json({
             ok: true,
             msg: 'El código es válido.',
-            data,
+            user,
             code: codeExist,
             codeIsValid: isValid(codeExist.validUntil),
         });
