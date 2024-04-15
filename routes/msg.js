@@ -17,10 +17,10 @@ router.post('/send', [
     validateJWT,
 ], sendMessage);
 
+//ruta no protegida
 router.post('/send-verification-sms', [
     check('uid', 'El uid debe ser valido').isMongoId(),
     check('uid').custom( validateUserById ),
-    validateJWT,
     validateFields,
 ], sendVerificationSMSMessage);
 
