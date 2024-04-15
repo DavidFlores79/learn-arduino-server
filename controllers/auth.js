@@ -67,7 +67,7 @@ const activate = async (req, res = response) => {
         }
 
         const data = await userModel.findByIdAndUpdate('661d59a83eb3051740a95991', {
-            active: false,
+            active: true,
         }, { new: true });
         
         return res.json({
