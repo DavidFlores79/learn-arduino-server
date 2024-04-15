@@ -58,12 +58,12 @@ const activate = async (req, res = response) => {
         const codeExist = await activationCodeModel.findOne({ userUid: uid, code }).sort({ createdAt: -1 });
 
         if (!codeExist) {
-            return res.status(404).json({ message: 'No se encontró ningún registro que coincida' });
+            return res.status(404).json({ msg: 'No se encontró ningún registro que coincida' });
         }
 
         const stillValid = isValid(codeExist.validUntil);
         if (!stillValid) {
-            return res.status(400).json({ message: 'El código NO es válido' });
+            return res.status(400).json({ msg: 'El código NO es válido' });
         }
 
         const data = await userModel.findByIdAndUpdate('661d59a83eb3051740a95991', {
