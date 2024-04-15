@@ -1,5 +1,4 @@
 const projectModel = require('../models/user');
-const userConnectedModel = require('../models/userConnected');
 
 const userConnected = async (uid = '') => {
     const user = await projectModel.findById(uid);

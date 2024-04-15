@@ -1,6 +1,5 @@
 const { response } = require("express");
 const userModel = require("../models/user");
-const connectedUserModel = require("../models/userConnected");
 
 const getUsers = async (req, res = response) => {
 
@@ -28,7 +27,7 @@ const getConnectedUsers = async (req, res = response) => {
 
     try {
 
-        const users = await connectedUserModel.find().sort('-online');
+        const users = await userModel.find().sort('-online');
 
         res.json({
             ok: true,

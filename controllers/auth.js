@@ -1,5 +1,7 @@
 const { response } = require("express");
 const User = require('../models/user');
+const activationCodeModel = require("../models/activationCode");
+const userModel = require("../models/user");
 const bcrypt = require('bcryptjs');
 const { generateJWT, getExpTimestamp } = require("../helpers/jwt");
 
@@ -45,6 +47,45 @@ const register = async (req, res = response) => {
     }
 }
 
+const activate = async (req, res = response) => {
+
+    const { uid, code } = req.body;
+
+    console.log({ uid});
+
+    try {
+
+        const codeExist = await activationCodeModel.findOne({ userUid: uid, code }).sort({ createdAt: -1 });
+
+        if (!codeExist) {
+            return res.status(404).json({ message: 'No se encontró ningún registro que coincida' });
+        }
+
+        const stillValid = isValid(codeExist.validUntil);
+        if (!stillValid) {
+            return res.status(400).json({ message: 'El código NO es válido' });
+        }
+
+        const data = await userModel.findByIdAndUpdate('661d59a83eb3051740a95991', {
+            active: false,
+        }, { new: true });
+        
+        return res.json({
+            ok: true,
+            msg: 'El código es válido.',
+            data,
+            code: codeExist,
+            codeIsValid: isValid(codeExist.validUntil),
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            error
+        })
+    }
+}
+
 const login = async (req, res = response) => {
 
     const { email, password } = req.body;
@@ -75,9 +116,9 @@ const login = async (req, res = response) => {
         //generar JWT
         const jwt = await generateJWT(user.id);
         const { exp } = getExpTimestamp(jwt);
-        
+
         console.log(`El usuario ${user.name} se ha logueado`);
-        
+
         res.json({
             ok: true,
             msg: 'Usuario Autorizado. Token generado',
@@ -121,8 +162,18 @@ const renewToken = async (req, res = response) => {
 
 }
 
+const isValid = ( validUntil ) => {
+    // Obtiene la fecha y hora actual en formato UTC
+    const currentDateUTC = new Date().toISOString();
+    // Convierte la fecha de validUntil a formato UTC
+    const validUntilUTC = new Date(validUntil).toISOString();
+    // Compara las fechas
+    return currentDateUTC <= validUntilUTC;
+};
+
 module.exports = {
     register,
+    activate,
     login,
     renewToken,
 }

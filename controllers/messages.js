@@ -1,5 +1,7 @@
 const { response } = require("express");
 const twilio = require('twilio');
+const userModel = require("../models/user");
+const activationCodeModel = require("../models/activationCode");
 
 const getMessages = async (req, res = response) => {
 
@@ -88,22 +90,41 @@ const sendSMSMessage = async (req, res = response) => {
 const sendVerificationSMSMessage = async (req, res = response) => {
 
     try {
-        const { to } = req.body;
+        const { uid } = req.body;
 
-        console.log({ to });
+        console.log({ uid });
 
+        const user = await userModel.findOne({ _id: uid });
+
+        if(!user || !user.phone) {
+            return res.status(404).json({
+                ok: false,
+                error: "No se encontrÓ número de teléfono asociado. Favor de Validar"
+            });
+        }
+
+        const code = generateRandomNumber();
+        console.log({user});
+        
         const client = new twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
         await client.messages.create({
-            body: 'Tu código de verificación es: 162596',
+            body: `Tu código de verificación es: ${code}`,
             from: process.env.TWILIO_PHONE_NUMBER,
-            to: to
+            to: `+${user.phone}`
         })
-        .then(response => {
-            console.log(response)
+        .then(async response => {
+            console.log(response);
+            const newCode = new activationCodeModel({
+                userUid: user._id,
+                code: code,
+            });
+            await newCode.save();
+
             
             res.json({
                 ok: true,
-                msg: 'Mensaje enviado!',
+                msg: `Mensaje enviado el número ${user.phone}!`,
+                code,
                 response
             });
         })
@@ -111,6 +132,7 @@ const sendVerificationSMSMessage = async (req, res = response) => {
             console.log(error)
             return res.status(400).json({
                 ok: false,
+                msg: 'No fue posible enviar el mensaje SMS',
                 error
             })    
         });
@@ -127,6 +149,10 @@ const sendVerificationSMSMessage = async (req, res = response) => {
 
 }
 
+const generateRandomNumber = () => {
+    // Genera un número aleatorio en el rango [100000, 999999] (ambos inclusive)
+    return Math.floor(100000 + Math.random() * 900000);
+};
 
 module.exports = {
     getMessages,
