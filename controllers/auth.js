@@ -69,11 +69,17 @@ const activate = async (req, res = response) => {
         const user = await userModel.findByIdAndUpdate(uid, {
             active: true,
         }, { new: true });
+
+        //generar JWT
+        const jwt = await generateJWT(user.id);
+        const { exp } = getExpTimestamp(jwt);
         
         return res.json({
             ok: true,
             msg: 'El código es válido.',
             user,
+            jwt,
+            exp,
             code: codeExist,
             codeIsValid: isValid(codeExist.validUntil),
         });
