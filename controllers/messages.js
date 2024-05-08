@@ -51,11 +51,29 @@ const sendMessage = async (req, res = response) => {
 const sendEmailMessage = async (req, res = response) => {
 
     try {
-        const { recipient, subject } = req.body;
+        const { recipient, subject, routeName } = req.body;
+        var projectName = '';
+        var fileName = '';
+        var fullSubject = '';
+        var sensors = [];
 
-        console.log({ recipient, subject });
-
-        const info = sendNotificationEmail(recipient, subject)
+        switch (routeName) {
+            case 'temperature-dht':
+                projectName = 'Monitor de Temperatura';
+                fileName = 'esp32_bluetooth_to_serial_DHT11.ino';
+                fullSubject = `${subject} - Sensor DHT11 Arduino y ESP32`;
+                sensors.push({
+                    quantity: '1',
+                    name: 'Sensor DHT11 o DHT22'
+                });
+                break;
+        
+            default:
+                break;
+        }
+        
+        console.log({ recipient, fullSubject, projectName, fileName, sensors });
+        const info = sendNotificationEmail(recipient, subject, projectName, fileName, sensors)
 
         if(!info) return res.status(400).json({ ok: false, error})
 

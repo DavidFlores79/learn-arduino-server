@@ -1,11 +1,17 @@
 const nodeMailer = require('nodemailer');
 
-async function sendNotificationEmail(recipient, subject, message) {
+async function sendNotificationEmail(recipient, subject, projectName, fileName, sensors) {
 
 	try {
 		const recipients = process.env.MAIL_RECIPIENTS.split(',');
 		recipients.push(recipient);
 		console.log('recipients', recipients);
+		let sensorsHtml = '';
+
+		sensors.forEach(sensor => {
+			sensorsHtml += `<td>${sensor.quantity} ${sensor.name}</td>`
+		});
+
 
 		const html = `
 		<!DOCTYPE html>
@@ -168,7 +174,7 @@ async function sendNotificationEmail(recipient, subject, message) {
 								</tr>
 								<tr>
 									<td><b>Nombre del Proyecto: </b></td>
-									<td>Monitor de Temperatura</td>
+									<td>${projectName}</td>
 								</tr>
 								<tr>
 									<td><b>Dificultad: </b></td>
@@ -176,21 +182,21 @@ async function sendNotificationEmail(recipient, subject, message) {
 								</tr>
 								<tr>
 									<td><b>Sensores:</b></td>
-									<td>1 sensor DHT11 o DHT22</td>
+									${sensorsHtml}
 								</tr>
 								<tr>
-									<td><b>Fecha SOLICITADA:</b></td>
-									<td>06-05-2024</td>
+									<td><b>Fecha/Hora SOLICITADA:</b></td>
+									<td>${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}</td>
 								</tr>
 								<tr>
 									<td align="left" colspan="2">
-										<p>Puedes realizar la descarga del archivo en el siguiente <a href="https://enlacetecnologias.mx/assets/esp32_bluetooth_to_serial_DHT11.ino">Link</a></p>
+										<p>Puedes realizar la descarga del archivo en el siguiente <a href="https://enlacetecnologias.mx/assets/${fileName}">Link</a></p>
 									</td>
 								</tr>
 								<tr>
 									<td align="center" colspan="2">
 										<p>Saludos Cordiales!,</p>
-										<p><b>Soy el Remitente</b></p>
+										<p><b>Maker's Lab Team</b></p>
 									</td>
 								</tr>
 								<tr>
@@ -214,7 +220,7 @@ async function sendNotificationEmail(recipient, subject, message) {
 							<table>
 								<tr>
 									<td align="center">
-										<p>Enviado automáticamente desde <a href="https://enlacetecnologias.mx" title="Portal Proveedores Calimax">Portal Proveedores Calimax</a></p>
+										<p>Enviado automáticamente desde <a href="https://enlacetecnologias.mx" title="Makers Lab Team">Makers Lab Team</a></p>
 									</td>
 								</tr>
 							</table>
