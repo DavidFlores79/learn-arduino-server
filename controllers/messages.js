@@ -73,7 +73,7 @@ const sendEmailMessage = async (req, res = response) => {
         }
         
         console.log({ recipient, fullSubject, projectName, fileName, sensors });
-        const info = sendNotificationEmail(recipient, subject, projectName, fileName, sensors)
+        const info = sendNotificationEmail(recipient, fullSubject, projectName, fileName, sensors)
 
         if(!info) return res.status(400).json({ ok: false, error})
 
