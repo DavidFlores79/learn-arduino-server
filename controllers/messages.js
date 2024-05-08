@@ -2,6 +2,7 @@ const { response } = require("express");
 const twilio = require('twilio');
 const userModel = require("../models/user");
 const activationCodeModel = require("../models/activationCode");
+const { sendNotificationEmail } = require("../helpers/email-notifications.helper");
 
 const getMessages = async (req, res = response) => {
 
@@ -34,6 +35,33 @@ const sendMessage = async (req, res = response) => {
         res.json({
             ok: true,
             msg: 'Mensaje enviado!',
+            uid: req.uid
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            error
+        })
+    }
+
+}
+
+const sendEmailMessage = async (req, res = response) => {
+
+    try {
+        const { recipient, subject } = req.body;
+
+        console.log({ recipient, subject });
+
+        const info = sendNotificationEmail(recipient, subject)
+
+        if(!info) return res.status(400).json({ ok: false, error})
+
+        res.json({
+            ok: true,
+            msg: `Mensaje enviado! a ${recipient}`,
             uid: req.uid
         });
 
@@ -159,4 +187,5 @@ module.exports = {
     sendMessage,
     sendSMSMessage,
     sendVerificationSMSMessage,
+    sendEmailMessage,
 }

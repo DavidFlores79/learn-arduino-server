@@ -4,7 +4,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
-const { getMessages, sendMessage, sendSMSMessage, sendVerificationSMSMessage } = require('../controllers/messages');
+const { getMessages, sendMessage, sendSMSMessage, sendVerificationSMSMessage, sendEmailMessage } = require('../controllers/messages');
 const { validateJWT } = require('../middlewares/validateJWT');
 const { validateUserById } = require('../helpers/dbValidators');
 const router = Router();
@@ -27,5 +27,9 @@ router.post('/send-verification-sms', [
 router.post('/send-sms', [
     validateJWT,
 ], sendSMSMessage);
+
+router.post('/send-email', [
+    validateJWT,
+], sendEmailMessage);
 
 module.exports = router;
