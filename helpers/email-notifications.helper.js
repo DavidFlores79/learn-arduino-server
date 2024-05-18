@@ -9,7 +9,7 @@ async function sendNotificationEmail(recipient, subject, projectName, fileName, 
 		let sensorsHtml = '';
 
 		sensors.forEach(sensor => {
-			sensorsHtml += `<td>${sensor.quantity} ${sensor.name}</td>`
+			sensorsHtml += `<tr><td>${sensor.quantity} ${sensor.name}</td></tr>`
 		});
 
 
