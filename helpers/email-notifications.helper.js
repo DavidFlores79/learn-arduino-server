@@ -199,11 +199,6 @@ async function sendNotificationEmail(recipient, subject, projectName, fileName, 
 										<p><b>Maker's Lab Team</b></p>
 									</td>
 								</tr>
-								<tr>
-									<td align="center" colspan="2">
-										<p><a href="https://enlacetecnologias.mx" class="btn-primary">Visitar la página</a></p>
-									</td>
-								</tr>
 							</table>
 						</div>
 					</td>
