@@ -5,6 +5,7 @@ const path = require('path');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const msgRoutes = require('./routes/msg');
+const openAiRoutes = require('./routes/openia');
 
 //DB Config
 const { dbConnection } = require('./database/config');
@@ -41,8 +42,7 @@ app.use(function (req, res, next) {
 app.use('/api/auth', authRoutes);
 app.use('/api/v1/messages', msgRoutes);
 app.use('/api/v1/users', userRoutes);
-
-
+app.use('/api/v1/open-ai', openAiRoutes);
 
 server.listen(process.env.PORT, (err) => {
     if (err) throw new Error(`Error: ${err}`);
