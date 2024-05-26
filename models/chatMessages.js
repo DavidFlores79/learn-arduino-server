@@ -3,7 +3,6 @@ const { Schema, model } = require('mongoose');
 const ChatMessageSchema = Schema({
     chatId: {
         type: String,
-        required: true,
     },
     userId: {
         type: Schema.Types.ObjectId,
@@ -16,11 +15,18 @@ const ChatMessageSchema = Schema({
     },
     content: {
         type: String,
-        required: true,
+        default: '',
     },
     model: {
         type: String,
-        required: true,
+    },
+    name: {
+        type: String,
+        default: null,
+    },
+    function_call: {
+        type: Object,
+        default: null,
     },
 },
 {
