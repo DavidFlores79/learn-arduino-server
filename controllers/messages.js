@@ -48,7 +48,7 @@ const sendMessage = async (req, res = response) => {
 
 }
 
-const sendEmailMessage = async (req, res = response) => {
+const sendProjectEmail = async (req, res = response) => {
 
     try {
         const { recipient, subject, routeName } = req.body;
@@ -98,6 +98,29 @@ const sendEmailMessage = async (req, res = response) => {
             ok: true,
             msg: `Mensaje enviado! a ${recipient}`,
             uid: req.uid
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            error
+        })
+    }
+
+}
+
+const sendEmail = async (req, res = response) => {
+
+    try {
+        const { first_name, last_name, email, phone, business_name } = req.body;
+
+        console.log({ first_name, last_name, email, phone, business_name });
+
+        res.json({
+            ok: true,
+            msg: `Mensaje enviado! Cliente ${first_name} ${last_name} guardado`,
+            uid: req.uid,
         });
 
 
@@ -222,5 +245,6 @@ module.exports = {
     sendMessage,
     sendSMSMessage,
     sendVerificationSMSMessage,
-    sendEmailMessage,
+    sendEmail,
+    sendProjectEmail,
 }

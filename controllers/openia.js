@@ -109,9 +109,12 @@ const openAIFunctionCall = async (req, res = response) => {
                 chatId: 'XXX',
                 userId: uid,
                 role: 'system',
-                content: `The current date and time is ${currentDateTime}. The first day of the week is Monday. A complete week is from Monday to Friday. Purchase Order Request Appointment must always ask for a Date and Time to deliver`,
+                content: `You are a helpful assistant that works for a Company named ITSoft Services de México. Your name es Chat. Keep your answers short. The current date and time is ${currentDateTime}. 
+                IMPORTANT:
+                - The first day of the week is Monday. 
+                - A complete week is from Monday to Friday. 
+                - For an appointment request (appointment_request_for_purchase_order function) you must always ask for a Date and Time to deliver.`,
                 model: 'XXX',
-
             });
 
         }
@@ -153,7 +156,7 @@ const openAIFunctionCall = async (req, res = response) => {
                         console.log('buscar fechas');
                         functionToInvoke = searchPurchaseOrderFunction;
                         break;
-                        case 'appointment_request_for_purchase_order':
+                    case 'appointment_request_for_purchase_order':
                         console.log('pedir cita');
                         functionToInvoke = purchaseOrderAppointmentRequest;
                         console.log({ functionName });
@@ -204,8 +207,13 @@ const openAIFunctionCall = async (req, res = response) => {
 
 
     } catch (error) {
-        return res.status(500).json({
+        console.error('***********************');
+        console.error(error);
+        // console.error(error.data.message);
+        // console.error(error.message);
+        return res.status(400).json({
             ok: false,
+            msg: "No fue posible enviar el mensaje",
             error
         })
     }
@@ -214,15 +222,17 @@ const openAIFunctionCall = async (req, res = response) => {
 const searchPurchaseOrderFunction = async (data) => {
     console.log({ data });
 
+    let result;
+
     try {
-        let result;
-
-        ordersInfo = await searchOrders(data);
-        result = ordersInfo;
-        console.log(ordersInfo);
+        const response = await searchOrders(data);
+        result = response;
+        console.log({ response });
         return result;
-
     } catch (error) {
+        console.log('********************************************');
+        console.log(error);
+        console.log('********************************************');
         return 'Error: Could not perform this method.'
     }
 }
@@ -235,12 +245,14 @@ const purchaseOrderAppointmentRequest = async (data) => {
         let result;
 
         const response = await requestAppointment(data);
-        console.log(response);
+        console.log({ response });
         result = response;
         return result;
 
     } catch (error) {
+        console.log('********************************************');
         console.log(error);
+        console.log('********************************************');
         return 'Error: Could not perform this method.'
     }
 }
@@ -351,7 +363,7 @@ const getChatMessages = async (uid) => {
             userId: uid
         })
             .sort({ createdAt: -1 })
-            .limit(6)
+            .limit(4)
             .select('role content name function_call');
 
 
@@ -389,25 +401,7 @@ const requestAppointment = async ({ doc_num, appointment_request_date, supplier 
         "supplier": supplier
     });
 
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `http://proveedoressbo.test.com${endpoint}`,
-        headers: {
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOjMsImlzcyI6IkRFViBQcm92ZWVkb3JlcyBTQk8iLCJhdWQiOiIiLCJleHAiOjE3MTY2ODY1ODQsImlhdCI6MTcxNjY3OTM4NCwibmJmIjoxNzE2Njc5Mzg0LCJqdGkiOiI2NjUyNzJkOGE0MGVhIn0.e60m0Sdch98k7ajKIb0kJg74jNFzYFH6oG67cclsrHKgdp6xR5y0YBKSf6XJLhF0vjIaeVfOb1jNGIOxE9mt0g',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        data: data
-    };
-
-    try {
-        const response = await axios.request(config);
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw new Error('No fue posible encontrar el proveedor');
-    }
+    return await makeHttpRequest({ method: 'post', endpoint, data });
 }
 
 const searchOrders = async ({ start_date, end_date, supplier }) => {
@@ -419,26 +413,35 @@ const searchOrders = async ({ start_date, end_date, supplier }) => {
         "supplier": supplier
     });
 
-    let config = {
-        method: 'post',
+    return await makeHttpRequest({ method: 'post', endpoint, data });
+}
+
+const makeHttpRequest = async ({ method, endpoint, data }) => {
+
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOjMsImlzcyI6IkRFViBQcm92ZWVkb3JlcyBTQk8iLCJhdWQiOiIiLCJleHAiOjE3MTY3ODIzODIsImlhdCI6MTcxNjc3NTE4MiwibmJmIjoxNzE2Nzc1MTgyLCJqdGkiOiI2NjUzZTkwZTE2YzgxIn0.zor9sRDaIuLpvWCkakEi8Bcg4cDdrTnPT4zehXJQyyJc9Mfij2smqil04tBUIVGGLriKKH4g1qQ17buqEQKUcg';
+
+    const config = {
+        method: method,
         maxBodyLength: Infinity,
         url: `http://proveedoressbo.test.com${endpoint}`,
         headers: {
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOjMsImlzcyI6IkRFViBQcm92ZWVkb3JlcyBTQk8iLCJhdWQiOiIiLCJleHAiOjE3MTY2ODY1ODQsImlhdCI6MTcxNjY3OTM4NCwibmJmIjoxNzE2Njc5Mzg0LCJqdGkiOiI2NjUyNzJkOGE0MGVhIn0.e60m0Sdch98k7ajKIb0kJg74jNFzYFH6oG67cclsrHKgdp6xR5y0YBKSf6XJLhF0vjIaeVfOb1jNGIOxE9mt0g',
+            'Authorization': `Bearer ${token}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
-        data: data
+        data: data,
     };
 
     try {
         const response = await axios.request(config);
         return response.data;
     } catch (error) {
-        console.error(error);
-        throw new Error('No fue posible encontrar el proveedor');
+        console.error('///////***********************////////////');
+        console.log(error);
+        message = error.data.message || error.message || 'Error al enviar peticion Http';
+        return { code: error.code, message: message }
     }
-}
+};
 
 
 module.exports = {
