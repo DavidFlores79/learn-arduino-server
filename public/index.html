@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Servidor Websockets | Login</title>
+    <title>Learn Arduino Websocket | Login</title>
     <link href="./media/favicon.png" rel="icon" type="image/png" />
     <link
       rel="stylesheet"
@@ -16,11 +16,27 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <style>
+      .main-bg {
+        background-image: url(./media/background.jpg);
+        background-size: cover;
+        background-position: center center;
+        height: 100vh;
+        color: #fff;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .login-container {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+    </style>
   </head>
 
   <body>
     <div
-      class="vw-100 vh-100 d-flex align-items-center justify-content-center border"
+      class="main-bg vw-100 vh-100 align-items-center justify-content-center border"
     >
       <div class="login-container col-10 col-sm-8 col-md-6 col-lg-4 p-3 shadow">
         <form method="POST" action="">
@@ -66,6 +82,7 @@
           </div>
         </form>
       </div>
+      
     </div>
 
     <script src="socket.io/socket.io.js"></script>
