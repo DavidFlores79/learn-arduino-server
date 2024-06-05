@@ -2,7 +2,7 @@ const { response } = require("express");
 const twilio = require('twilio');
 const userModel = require("../models/user");
 const activationCodeModel = require("../models/activationCode");
-const { sendNotificationEmail, sendLearnArduinoNotificationEmail } = require("../helpers/email-notifications.helper");
+const { sendLeadNotificationEmail, sendLearnArduinoNotificationEmail } = require("../helpers/email-notifications.helper");
 
 const getMessages = async (req, res = response) => {
 
@@ -117,14 +117,16 @@ const sendEmail = async (req, res = response) => {
 
         console.log({ first_name, last_name, email, phone, business_name });
 
-        const info = sendNotificationEmail(first_name, last_name, email, phone, business_name)
+        const info = sendLeadNotificationEmail(first_name, last_name, email, phone, business_name);
+
+        console.log({ info });
 
         if (!info) return res.status(400).json({ ok: false, error })
 
         res.json({
             ok: true,
-            msg: `Mensaje enviado! a ${recipient}`,
-            uid: req.uid
+            msg: `Mensaje enviado! Cliente ${first_name} ${last_name} guardado`,
+            uid: req.uid,
         });
 
 

@@ -260,7 +260,7 @@ async function sendLearnArduinoNotificationEmail(recipient, subject, projectName
 
 }
 
-async function sendNotificationEmail(first_name, last_name, email, phone, business_name) {
+async function sendLeadNotificationEmail(first_name, last_name, email, phone, business_name) {
 
 	try {
 		const subject = 'Tienes un Email desde ITSOFT ChatBot';
@@ -413,13 +413,13 @@ async function sendNotificationEmail(first_name, last_name, email, phone, busine
 							<table>
 								<tr>
 									<td align="center" colspan="2">
-										<img src="https://itsoft.mx/img/brand/og-logo.png" alt="logo ITSOFT Services de México"/>
+										<img src="https://itsoft.mx/img/brand/og-logo.png" alt="logo ITSOFT Services de México" height="300"/>
 									</td>
 								</tr>
 								<!-- Email content goes here .. -->
 								<tr>
 									<td colspan="2">
-										<h4>Atención <i>Maker</i>,</h4>
+										<h4>Atención <i>ITSOFT</i>,</h4>
 										<p></p>
 										<p>El siguiente mensaje está llegando desde el sitio de ITSoft por medio de un ChatBot hecho con Inteligencia Artificial de OPEN-AI</p>
 									</td>
@@ -450,7 +450,7 @@ async function sendNotificationEmail(first_name, last_name, email, phone, busine
 								<tr>
 									<td align="center" colspan="2">
 										<p>Saludos Cordiales!,</p>
-										<p><b>ITSoft Services de Mexico</b></p>
+										<p><b>ITSoft ChatBot</b></p>
 									</td>
 								</tr>
 							</table>
@@ -469,7 +469,7 @@ async function sendNotificationEmail(first_name, last_name, email, phone, busine
 							<table>
 								<tr>
 									<td align="center">
-										<p>Enviado automáticamente desde <a href="https://enlacetecnologias.mx" title="Makers Lab Team">Makers Lab Team</a></p>
+										<p>Enviado automáticamente desde <a href="https://itsoft.mx" title="ITSOFT Team">ITSOFT Team</a></p>
 									</td>
 								</tr>
 							</table>
@@ -514,4 +514,4 @@ async function sendNotificationEmail(first_name, last_name, email, phone, busine
 
 }
 
-module.exports = { sendNotificationEmail, sendLearnArduinoNotificationEmail }
+module.exports = { sendLeadNotificationEmail, sendLearnArduinoNotificationEmail }
