@@ -263,6 +263,7 @@ async function sendLearnArduinoNotificationEmail(recipient, subject, projectName
 async function sendNotificationEmail(first_name, last_name, email, phone, business_name) {
 
 	try {
+		const subject = 'Tienes un Email desde ITSOFT ChatBot';
 		const recipients = process.env.MAIL_RECIPIENTS.split(',');
 		// recipients.push(email);
 		console.log('recipients', recipients);
